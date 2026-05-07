@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>QuizBuzz 🎯</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--red:#FF3B5C;--blue:#0099FF;--yellow:#FFD600;--green:#00C896;--bg:#1a0533;--radius:16px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.5) 0%,transparent 100%),radial-gradient(1px 1px at 40% 60%,rgba(255,255,255,.3) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 70% 15%,rgba(255,255,255,.4) 0%,transparent 100%),radial-gradient(1px 1px at 85% 70%,rgba(255,255,255,.3) 0%,transparent 100%)}
+.screen{display:none;position:relative;z-index:1;min-height:100vh;padding:20px;flex-direction:column;align-items:center;animation:fadeIn .35s ease}
+.screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.logo{font-family:'Fredoka One',cursive;font-size:clamp(3rem,10vw,5.5rem);background:linear-gradient(135deg,var(--yellow),var(--red),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:glow 2s ease-in-out infinite}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 20px rgba(255,214,0,.25))}50%{filter:drop-shadow(0 0 40px rgba(255,214,0,.65))}}
+.btn{padding:16px 36px;border:none;border-radius:var(--radius);font-family:'Fredoka One',cursive;font-size:1.35rem;cursor:pointer;transition:all .18s;width:100%;max-width:380px}
+.btn:active{transform:scale(.96)}
+.btn-host{background:linear-gradient(135deg,#FF3B5C,#FF8C00);color:#fff;box-shadow:0 8px 28px rgba(255,59,92,.4)}
+.btn-player{background:linear-gradient(135deg,#0099FF,#00C896);color:#fff;box-shadow:0 8px 28px rgba(0,153,255,.4)}
+.btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.2);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;padding:13px 30px}
+.inp{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);border-radius:var(--radius);padding:15px 20px;color:#fff;font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:700;text-align:center;outline:none;width:100%;max-width:380px;transition:border-color .2s}
+.inp::placeholder{color:rgba(255,255,255,.35)}
+.inp:focus{border-color:var(--yellow)}
+.pin-box{background:#fff;color:var(--bg);border-radius:24px;padding:28px 48px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.pin-label{font-size:.85rem;font-weight:800;letter-spacing:3px;color:#666;text-transform:uppercase}
+.pin-code{font-family:'Fredoka One',cursive;font-size:clamp(3rem,12vw,5rem);letter-spacing:8px;line-height:1.1}
+.pin-hint{font-size:.8rem;color:#999;margin-top:6px}
+.players-wrap{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;max-width:680px;width:100%;max-height:280px;overflow-y:auto;padding:14px;background:rgba(255,255,255,.05);border-radius:var(--radius)}
+.p-badge{background:rgba(255,255,255,.13);border-radius:30px;padding:7px 16px;font-weight:700;font-size:.88rem;display:flex;align-items:center;gap:5px;animation:popIn .3s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.counter{font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--yellow)}
+.counter span{font-size:3rem}
+.q-header{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.08);border-radius:var(--radius);padding:14px 18px;width:100%}
+.q-label{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--yellow)}
+.q-answered{font-size:.85rem;font-weight:700;color:rgba(255,255,255,.6)}
+.timer-ring{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.55rem;box-shadow:0 0 18px rgba(255,214,0,.3);background:conic-gradient(var(--yellow) 100%,rgba(255,255,255,.1) 0%);transition:background .15s}
+.q-text{background:rgba(255,255,255,.1);border-radius:var(--radius);padding:22px 28px;font-size:clamp(1rem,3vw,1.5rem);font-weight:800;text-align:center;line-height:1.4;width:100%;border:2px solid rgba(255,255,255,.1)}
+.answers-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;width:100%;flex:1}
+.ans-btn{border:none;border-radius:var(--radius);padding:18px 14px;font-family:'Nunito',sans-serif;font-size:clamp(.8rem,2.5vw,1.05rem);font-weight:800;cursor:pointer;display:flex;align-items:center;gap:11px;color:#fff;text-align:left;min-height:78px;transition:all .18s}
+.ans-btn.a{background:linear-gradient(135deg,var(--red),#c62a47);box-shadow:0 4px 18px rgba(255,59,92,.3)}
+.ans-btn.b{background:linear-gradient(135deg,var(--blue),#0066cc);box-shadow:0 4px 18px rgba(0,153,255,.3)}
+.ans-btn.c{background:linear-gradient(135deg,var(--yellow),#e6a800);color:var(--bg);box-shadow:0 4px 18px rgba(255,214,0,.3)}
+.ans-btn.d{background:linear-gradient(135deg,var(--green),#00a070);box-shadow:0 4px 18px rgba(0,200,150,.3)}
+.ans-shape{width:38px;height:38px;flex-shrink:0;background:rgba(0,0,0,.18);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.ans-text{flex:1;line-height:1.3}
+.results-wrap{background:rgba(255,255,255,.07);border-radius:var(--radius);padding:18px;width:100%;overflow-y:auto}
+.r-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.r-bar-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.r-bar-fill{height:40px;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-weight:800;font-size:.88rem;min-width:44px;transition:width .8s cubic-bezier(.16,1,.3,1);white-space:nowrap;overflow:hidden}
+.r-bar-count{font-weight:800;font-size:.85rem;color:rgba(255,255,255,.7);min-width:28px}
+.correct-chip{background:var(--green);color:#fff;border-radius:20px;padding:2px 10px;font-size:.72rem;font-weight:800;letter-spacing:1px;margin-left:auto;flex-shrink:0}
+.lb-list{display:flex;flex-direction:column;gap:9px;width:100%;max-width:580px}
+.lb-item{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,.08);border-radius:var(--radius);padding:13px 18px;animation:slideIn .4s ease both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-25px)}to{opacity:1;transform:translateX(0)}}
+.lb-rank{font-family:'Fredoka One',cursive;font-size:1.4rem;width:36px;text-align:center;color:rgba(255,255,255,.35)}
+.lb-rank.g{color:#FFD600;font-size:1.7rem}.lb-rank.s{color:#C0C0C0;font-size:1.6rem}.lb-rank.b{color:#CD7F32;font-size:1.55rem}
+.lb-name{flex:1;font-weight:800;font-size:1.05rem}
+.lb-score{font-family:'Fredoka One',cursive;font-size:1.25rem;color:var(--yellow)}
+.p-avatar{font-size:4.5rem;animation:bop 1s ease-in-out infinite alternate}
+@keyframes bop{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+.p-name-big{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--yellow)}
+.dots{display:flex;gap:6px;margin-top:8px}
+.dot{width:9px;height:9px;background:var(--yellow);border-radius:50%;animation:dot .9s ease infinite}
+.dot:nth-child(2){animation-delay:.18s}.dot:nth-child(3){animation-delay:.36s}
+@keyframes dot{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-9px);opacity:.45}}
+.score-chip{background:rgba(255,255,255,.1);border-radius:30px;padding:10px 22px;font-weight:800;font-size:1rem;color:var(--yellow);text-align:center}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:380px}
+.p-ans{aspect-ratio:1;border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:2.4rem;transition:all .15s;box-shadow:0 8px 22px rgba(0,0,0,.3)}
+.p-ans.a{background:var(--red)}.p-ans.b{background:var(--blue)}.p-ans.c{background:var(--yellow)}.p-ans.d{background:var(--green)}
+.p-ans:active{transform:scale(.9)}.p-ans.selected{opacity:.55;transform:scale(.93)}.p-ans:disabled{cursor:default}
+.p-timer{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--yellow)}
+.r-emoji{font-size:5rem;animation:popIn .5s ease}
+.r-msg{font-family:'Fredoka One',cursive;font-size:2rem}
+.r-pts{font-family:'Fredoka One',cursive;font-size:3rem;color:var(--yellow);text-shadow:0 0 20px rgba(255,214,0,.5)}
+.final-title{font-family:'Fredoka One',cursive;font-size:clamp(2.2rem,8vw,4rem);background:linear-gradient(135deg,var(--yellow),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:glow 1.5s ease infinite}
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
+.cp{position:absolute;top:-20px;opacity:0;animation:fall linear forwards;border-radius:2px}
+@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+.err-msg{background:rgba(255,59,92,.2);border:1px solid var(--red);border-radius:10px;padding:10px 18px;font-size:.9rem;font-weight:700;color:var(--red);text-align:center;display:none;max-width:380px}
+.emoji-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;max-width:380px;width:100%}
+.em-opt{aspect-ratio:1;background:rgba(255,255,255,.08);border:2px solid transparent;border-radius:12px;font-size:1.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.em-opt:hover{background:rgba(255,255,255,.18);transform:scale(1.1)}.em-opt.sel{border-color:var(--yellow);background:rgba(255,214,0,.18)}
+.gap{display:flex;flex-direction:column;gap:13px;align-items:center;width:100%}
+.info-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:14px 18px;font-size:.87rem;color:rgba(255,255,255,.55);max-width:380px;text-align:center;line-height:1.6}
+.section-h{font-family:'Fredoka One',cursive;font-size:1.8rem}
+.label{font-family:'Fredoka One',cursive;font-size:1rem;color:rgba(255,255,255,.7)}
+</style>
+</head>
+<body>
+
+<div id="s-land" class="screen active" style="justify-content:center;gap:24px;text-align:center;">
+  <div class="logo">QuizBuzz!</div>
+  <div style="color:rgba(255,255,255,.65);font-weight:700;">🎯 Quiz realtime cho 200+ người</div>
+  <div class="gap">
+    <button class="btn btn-host" onclick="goHost()">🖥️ Tôi là Host</button>
+    <button class="btn btn-player" onclick="goPlayer()">📱 Tôi là Người chơi</button>
+  </div>
+  <div class="info-box">Host mở trên máy tính / TV.<br>Người chơi dùng điện thoại, nhập mã PIN để vào.</div>
+</div>
+
+<div id="s-host-lobby" class="screen" style="gap:18px;align-items:center;">
+  <div class="section-h" style="margin-top:8px;">🎮 Phòng chờ</div>
+  <div class="pin-box">
+    <div class="pin-label">Mã PIN vào game</div>
+    <div class="pin-code" id="pin-display">------</div>
+    <div class="pin-hint">Mở trang này → "Người chơi" → nhập PIN</div>
+  </div>
+  <div class="counter">Người chơi: <span id="h-count">0</span></div>
+  <div class="players-wrap" id="h-players"></div>
+  <button class="btn btn-host" onclick="hostStart()">▶️ Bắt đầu Game</button>
+  <button class="btn btn-ghost" onclick="goLand()">← Về trang chủ</button>
+</div>
+
+<div id="s-host-q" class="screen" style="gap:13px;">
+  <div class="q-header">
+    <div>
+      <div class="q-label" id="h-q-label">Câu 1 / 15</div>
+      <div class="q-answered"><span id="h-ans-count">0</span> / <span id="h-total-count">0</span> đã trả lời</div>
+    </div>
+    <div class="timer-ring" id="h-timer">20</div>
+  </div>
+  <div class="q-text" id="h-q-text">...</div>
+  <div class="answers-grid">
+    <button class="ans-btn a"><div class="ans-shape">▲</div><div class="ans-text" id="h-opt-0">A</div></button>
+    <button class="ans-btn b"><div class="ans-shape">●</div><div class="ans-text" id="h-opt-1">B</div></button>
+    <button class="ans-btn c"><div class="ans-shape">■</div><div class="ans-text" id="h-opt-2">C</div></button>
+    <button class="ans-btn d"><div class="ans-shape">✦</div><div class="ans-text" id="h-opt-3">D</div></button>
+  </div>
+  <button class="btn btn-ghost" style="max-width:260px;font-size:.9rem;" id="btn-end-q" onclick="hostEndQ()">⏭️ Kết thúc câu sớm</button>
+</div>
+
+<div id="s-host-results" class="screen" style="gap:13px;">
+  <div class="section-h" style="text-align:center;">📊 Kết quả</div>
+  <div class="q-text" id="r-q-text" style="font-size:.95rem;padding:13px 18px;"></div>
+  <div class="results-wrap" id="r-bars"></div>
+  <div class="lb-list" id="r-lb" style="max-height:210px;overflow:hidden;"></div>
+  <button class="btn btn-host" id="btn-next" onclick="hostNext()">⏭️ Câu tiếp theo</button>
+</div>
+
+<div id="s-host-final" class="screen" style="gap:18px;justify-content:center;align-items:center;text-align:center;">
+  <div class="final-title">🏆 GAME KẾT THÚC!</div>
+  <div class="section-h" style="color:var(--yellow);">Bảng xếp hạng cuối</div>
+  <div class="lb-list" id="final-lb"></div>
+  <button class="btn btn-ghost" style="max-width:280px;" onclick="goLand()">🔄 Chơi lại</button>
+</div>
+
+<div id="s-p-join" class="screen" style="justify-content:center;gap:16px;text-align:center;">
+  <div class="logo" style="font-size:2.8rem;">QuizBuzz!</div>
+  <div class="gap">
+    <input class="inp" id="p-pin" type="number" placeholder="Nhập mã PIN (6 số)" maxlength="6" inputmode="numeric">
+    <input class="inp" id="p-name" type="text" placeholder="Tên của bạn (tối đa 12 ký tự)" maxlength="12">
+    <div class="label">Chọn avatar:</div>
+    <div class="emoji-grid" id="em-grid"></div>
+    <div class="err-msg" id="p-err"></div>
+    <button class="btn btn-player" onclick="playerJoin()">🚀 Vào Game!</button>
+    <button class="btn btn-ghost" onclick="goLand()">← Quay lại</button>
+  </div>
+</div>
+
+<div id="s-p-wait" class="screen" style="justify-content:center;gap:16px;text-align:center;">
+  <div class="p-avatar" id="p-av">🦊</div>
+  <div class="p-name-big" id="p-nm">Bạn</div>
+  <div style="font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.7);">Đang chờ host bắt đầu...</div>
+  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <div class="score-chip">Điểm: <span id="p-wait-score">0</span></div>
+</div>
+
+<div id="s-p-ans" class="screen" style="gap:14px;align-items:center;">
+  <div class="p-timer">⏱️ <span id="p-timer">20</span>s</div>
+  <div class="q-text" id="p-q-text" style="font-size:.95rem;padding:14px 18px;width:100%;max-width:400px;"></div>
+  <div class="p-grid">
+    <button class="p-ans a" onclick="playerAns(0)">▲</button>
+    <button class="p-ans b" onclick="playerAns(1)">●</button>
+    <button class="p-ans c" onclick="playerAns(2)">■</button>
+    <button class="p-ans d" onclick="playerAns(3)">✦</button>
+  </div>
+  <div class="score-chip">Điểm: <span id="p-ans-score">0</span></div>
+</div>
+
+<div id="s-p-result" class="screen" style="justify-content:center;gap:18px;text-align:center;">
+  <div class="r-emoji" id="r-emoji">🎉</div>
+  <div class="r-msg" id="r-msg">Chính xác!</div>
+  <div class="r-pts" id="r-pts">+800</div>
+  <div class="score-chip">Tổng: <span id="r-total">0</span> điểm</div>
+  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  <div style="color:rgba(255,255,255,.45);font-size:.88rem;">Đang chờ câu tiếp theo...</div>
+</div>
+
+<div id="s-p-final" class="screen" style="justify-content:center;gap:16px;text-align:center;align-items:center;">
+  <div class="final-title">Game Over!</div>
+  <div class="p-avatar" id="pf-av">🦊</div>
+  <div class="p-name-big" id="pf-nm"></div>
+  <div class="r-pts" id="pf-score"></div>
+  <div class="lb-list" id="pf-lb"></div>
+  <button class="btn btn-ghost" style="max-width:280px;" onclick="goLand()">🔄 Chơi lại</button>
+</div>
+
+<div class="confetti-wrap" id="conf"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, update, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAPs1PSNrzJaBuQxj4ybfsMDTAiAtRTRYQ",
+  authDomain: "quizbuzz-e4f22.firebaseapp.com",
+  databaseURL: "https://quizbuzz-e4f22-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "quizbuzz-e4f22",
+  storageBucket: "quizbuzz-e4f22.firebasestorage.app",
+  messagingSenderId: "1022028089485",
+  appId: "1:1022028089485:web:b5401172fe44d220293ac4",
+  measurementId: "G-GC3D58PFXP"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const QUESTIONS = [
+  {q:"Thủ đô của Nhật Bản là gì?",opts:["Osaka","Kyoto","Tokyo","Hiroshima"],ans:2,time:15},
+  {q:"Sông nào dài nhất thế giới?",opts:["Amazon","Nile","Mekong","Mississippi"],ans:1,time:20},
+  {q:"Ai là người đầu tiên đặt chân lên Mặt Trăng?",opts:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],ans:2,time:20},
+  {q:"Việt Nam có bao nhiêu tỉnh thành?",opts:["58","61","63","67"],ans:2,time:15},
+  {q:"Ngôn ngữ lập trình nào phổ biến nhất 2024?",opts:["Java","Python","JavaScript","C++"],ans:1,time:20},
+  {q:"1 pound bằng bao nhiêu kg?",opts:["0.25 kg","0.45 kg","0.60 kg","0.75 kg"],ans:1,time:20},
+  {q:"Bức tranh Mona Lisa được vẽ bởi ai?",opts:["Michelangelo","Raphael","Leonardo da Vinci","Picasso"],ans:2,time:15},
+  {q:"Kim loại nào nhẹ nhất?",opts:["Nhôm","Lithium","Beryllium","Titanium"],ans:1,time:20},
+  {q:"Hà Nội nằm bên bờ sông nào?",opts:["Sông Mã","Sông Hồng","Sông Đà","Sông Lam"],ans:1,time:15},
+  {q:"Châu lục nào có diện tích lớn nhất?",opts:["Châu Phi","Châu Mỹ","Châu Á","Châu Âu"],ans:2,time:15},
+  {q:"Phim nào đoạt Oscar Phim xuất sắc nhất 2020?",opts:["1917","Joker","Parasite","Little Women"],ans:2,time:20},
+  {q:"Nhiệt độ sôi của nước ở áp suất chuẩn?",opts:["90°C","95°C","100°C","105°C"],ans:2,time:15},
+  {q:"Con người có bao nhiêu chiếc răng vĩnh viễn?",opts:["28","30","32","34"],ans:2,time:20},
+  {q:"Quốc gia nào có dân số đông nhất thế giới?",opts:["Ấn Độ","Trung Quốc","Mỹ","Indonesia"],ans:0,time:15},
+  {q:"Taylor Swift sinh ra ở bang nào của Mỹ?",opts:["Texas","California","Pennsylvania","Tennessee"],ans:2,time:20},
+];
+
+const AVATARS=['🦊','🐯','🐼','🦁','🐸','🦄','🐶','🐱','🐧','🦋','🐙','🦅','🐬','🦖','🧸','🦩','🐻','🦝','🐨','🐮'];
+const COLORS=['var(--red)','var(--blue)','var(--yellow)','var(--green)'];
+const SHAPES=['▲','●','■','✦'];
+
+// State
+let role='', myName='', myAvatar=AVATARS[0], myScore=0;
+let gamePin='', hasAnswered=false, currentQ=null;
+let timerInterval=null, questionDuration=20, questionStart=0;
+let activeListeners=[];
+let isEndingQuestion=false;
+let autoEndTimer=null;
+let currentQIndex=-1;
+
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
+function dbr(path){return ref(db,path)}
+
+function listen(path,cb){
+  const r=dbr(path);
+  onValue(r,snap=>cb(snap.val()));
+  activeListeners.push(r);
+}
+function stopAll(){activeListeners.forEach(r=>off(r));activeListeners=[]}
+
+function buildLb(obj,el,limit=10){
+  el.innerHTML='';
+  Object.entries(obj||{}).map(([n,d])=>({name:n,avatar:d.avatar||'🦊',score:d.score||0}))
+    .sort((a,b)=>b.score-a.score).slice(0,limit)
+    .forEach((p,i)=>{
+      const isMe=p.name===myName;
+      const ri=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`;
+      const rc=i===0?'g':i===1?'s':i===2?'b':'';
+      const d=document.createElement('div');
+      d.className='lb-item';d.style.animationDelay=(i*.08)+'s';
+      if(isMe)d.style.border='2px solid var(--yellow)';
+      d.innerHTML=`<div class="lb-rank ${rc}">${ri}</div><div class="lb-name">${p.avatar} ${p.name}${isMe?' 👈':''}</div><div class="lb-score">${p.score}đ</div>`;
+      el.appendChild(d);
+    });
+}
+
+function confetti(){
+  const wrap=$('conf');wrap.innerHTML='';
+  ['#FF3B5C','#0099FF','#FFD600','#00C896','#FF8C00','#FF69B4'].forEach(c=>{
+    for(let i=0;i<15;i++){
+      const el=document.createElement('div');el.className='cp';
+      el.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*10}px;height:${8+Math.random()*14}px;background:${c};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*2}s;`;
+      wrap.appendChild(el);
+    }
+  });
+  setTimeout(()=>wrap.innerHTML='',7000);
+}
+
+function startTimer(duration,start,onDone){
+  clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    const left=Math.max(0,duration-(Date.now()-start)/1000);
+    const pct=(left/duration)*100;
+    const color=left<=5?'var(--red)':'var(--yellow)';
+    if(role==='host'){
+      const el=$('h-timer');
+      el.textContent=Math.ceil(left);
+      el.style.background=`conic-gradient(${color} ${pct}%,rgba(255,255,255,.1) 0%)`;
+    } else {
+      $('p-timer').textContent=Math.ceil(left);
+    }
+    if(left<=0){clearInterval(timerInterval);if(onDone)onDone();}
+  },100);
+}
+
+// ===== HOST =====
+window.goHost=async function(){
+  role='host';
+  gamePin=Math.floor(100000+Math.random()*900000).toString();
+  await set(dbr(`games/${gamePin}`),{phase:'lobby',questionIndex:-1,questionStart:0,questionDuration:20,players:{},answers:{}});
+  $('pin-display').textContent=gamePin;
+  $('h-count').textContent='0';
+  $('h-players').innerHTML='';
+  show('s-host-lobby');
+  listen(`games/${gamePin}/players`,players=>{
+    const count=Object.keys(players||{}).length;
+    $('h-count').textContent=count;
+    Object.entries(players||{}).forEach(([name,data])=>{
+      if(!$('badge-'+name)){
+        const b=document.createElement('div');b.className='p-badge';b.id='badge-'+name;
+        b.innerHTML=`${data.avatar||'🦊'} ${name}`;$('h-players').appendChild(b);
+      }
+    });
+    $('h-players').querySelectorAll('.p-badge').forEach(b=>{
+      if(!(players||{})[b.id.replace('badge-','')]) b.remove();
+    });
+  });
+}
+
+window.hostStart=async function(){
+  const snap=await get(dbr(`games/${gamePin}/players`));
+  if(!snap.exists()||!Object.keys(snap.val()||{}).length){alert('Chưa có người chơi!');return;}
+  stopAll();
+  await doQuestion(0);
+}
+
+async function doQuestion(idx){
+  if(idx>=QUESTIONS.length){await doFinal();return;}
+  isEndingQuestion=false;
+  currentQIndex=idx;
+  const q=QUESTIONS[idx];
+  currentQ=q;
+  questionDuration=q.time;
+  questionStart=Date.now();
+
+  await set(dbr(`games/${gamePin}`),{
+    phase:'question',
+    questionIndex:idx,
+    questionStart,
+    questionDuration:q.time,
+    players:(await get(dbr(`games/${gamePin}/players`))).val()||{},
+    answers:{}
+  });
+
+  $('h-q-label').textContent=`Câu ${idx+1} / ${QUESTIONS.length}`;
+  $('h-q-text').textContent=q.q;
+  ['h-opt-0','h-opt-1','h-opt-2','h-opt-3'].forEach((id,i)=>$(id).textContent=q.opts[i]);
+  $('h-ans-count').textContent='0';
+
+  document.querySelectorAll('.ans-btn').forEach((b,i)=>{
+    b.style.opacity=i===q.ans?'1':'.65';
+    b.style.outline=i===q.ans?'3px solid white':'none';
+  });
+
+  listen(`games/${gamePin}/answers`,answers=>{
+    $('h-ans-count').textContent=Object.keys(answers||{}).length;
+  });
+  listen(`games/${gamePin}/players`,players=>{
+    $('h-total-count').textContent=Object.keys(players||{}).length;
+  });
+
+  show('s-host-q');
+  clearTimeout(autoEndTimer);
+  autoEndTimer=setTimeout(()=>hostEndQ(),q.time*1000+300);
+  startTimer(q.time,questionStart,()=>hostEndQ());
+}
+
+window.hostEndQ=async function(){
+  if(isEndingQuestion)return;
+  isEndingQuestion=true;
+  clearTimeout(autoEndTimer);
+  clearInterval(timerInterval);
+  stopAll();
+
+  const q=currentQ;
+  const idx=currentQIndex;
+
+  const [aSnap,pSnap]=await Promise.all([
+    get(dbr(`games/${gamePin}/answers`)),
+    get(dbr(`games/${gamePin}/players`))
+  ]);
+  const answers=aSnap.val()||{};
+  const players=pSnap.val()||{};
+
+  const counts=[0,0,0,0];
+  Object.values(answers).forEach(a=>{if(a.answer>=0&&a.answer<=3)counts[a.answer]++;});
+
+  const updates={};
+  const newScores={...players};
+
+  Object.entries(answers).forEach(([name,data])=>{
+    const correct=data.answer===q.ans;
+    let pts=0;
+    if(correct){
+      pts=200+Math.round(800*(data.timeRemaining/q.time));
+      if(newScores[name]) newScores[name]={...newScores[name],score:(newScores[name].score||0)+pts};
+      updates[`games/${gamePin}/players/${name}/score`]=(players[name]?.score||0)+pts;
+    }
+    updates[`games/${gamePin}/playerResults/${name}`]={correct,points:pts,totalScore:(players[name]?.score||0)+pts};
+  });
+  Object.keys(players).forEach(name=>{
+    if(!answers[name]){
+      updates[`games/${gamePin}/playerResults/${name}`]={correct:false,points:0,totalScore:players[name]?.score||0,noAnswer:true};
+    }
+  });
+  updates[`games/${gamePin}/phase`]='results';
+
+  await update(dbr(''),updates);
+
+  // Build results UI
+  const finalPlayers=(await get(dbr(`games/${gamePin}/players`))).val()||{};
+  showResults(q,counts,finalPlayers,Object.keys(answers).length);
+}
+
+function showResults(q,counts,players,totalAnswered){
+  $('r-q-text').textContent=q.q;
+  const bars=$('r-bars');bars.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const cnt=counts[i]||0;
+    const pct=Math.round((cnt/Math.max(totalAnswered,1))*100);
+    const row=document.createElement('div');row.className='r-bar-row';
+    row.innerHTML=`<div class="r-bar-icon" style="background:${COLORS[i]}">${SHAPES[i]}</div><div style="flex:1;display:flex;align-items:center;gap:8px;overflow:hidden;"><div class="r-bar-fill" style="width:${Math.max(pct,4)}%;background:${COLORS[i]};color:${i===2?'var(--bg)':'#fff'}">${opt.length>14?opt.slice(0,14)+'…':opt}</div>${i===q.ans?'<span class="correct-chip">✓ ĐÚNG</span>':''}</div><div class="r-bar-count">${cnt}</div>`;
+    bars.appendChild(row);
+  });
+  buildLb(players,$('r-lb'),5);
+  show('s-host-results');
+}
+
+window.hostNext=async function(){
+  await update(dbr(`games/${gamePin}`),{playerResults:null});
+  await doQuestion(currentQIndex+1);
+}
+
+async function doFinal(){
+  await update(dbr(`games/${gamePin}`),{phase:'final'});
+  const snap=await get(dbr(`games/${gamePin}/players`));
+  buildLb(snap.val()||{},$('final-lb'),10);
+  show('s-host-final');
+  confetti();
+}
+
+// ===== PLAYER =====
+window.goPlayer=function(){
+  role='player';
+  const grid=$('em-grid');grid.innerHTML='';
+  AVATARS.forEach((em,i)=>{
+    const d=document.createElement('div');d.className='em-opt'+(i===0?' sel':'');
+    d.textContent=em;
+    d.onclick=()=>{document.querySelectorAll('.em-opt').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');myAvatar=em;};
+    grid.appendChild(d);
+  });
+  $('p-err').style.display='none';
+  show('s-p-join');
+}
+
+window.playerJoin=async function(){
+  const pin=$('p-pin').value.trim();
+  const name=$('p-name').value.trim();
+  $('p-err').style.display='none';
+  if(!pin||pin.length<4){showErr('Nhập mã PIN!');return;}
+  if(!name){showErr('Nhập tên của bạn!');return;}
+  const snap=await get(dbr(`games/${pin}`));
+  if(!snap.exists()){showErr('PIN không đúng!');return;}
+  if(snap.val().phase!=='lobby'){showErr('Game đã bắt đầu rồi!');return;}
+  if(snap.val().players&&snap.val().players[name]){showErr('Tên đã có người dùng!');return;}
+  gamePin=pin;myName=name;myScore=0;
+  await update(dbr(`games/${gamePin}/players/${myName}`),{avatar:myAvatar,score:0});
+  $('p-av').textContent=myAvatar;$('p-nm').textContent=name;$('p-wait-score').textContent='0';
+  show('s-p-wait');
+  playerListen();
+}
+
+function showErr(msg){const e=$('p-err');e.textContent=msg;e.style.display='block';}
+
+let lastPhase='', lastQIdx=-1;
+function playerListen(){
+  listen(`games/${gamePin}`,game=>{
+    if(!game)return;
+    const phase=game.phase;
+    const qIdx=game.questionIndex;
+
+    if(phase==='question'&&(phase!==lastPhase||qIdx!==lastQIdx)){
+      lastPhase=phase;lastQIdx=qIdx;
+      hasAnswered=false;
+      const q=QUESTIONS[qIdx];
+      currentQ=q;
+      questionDuration=game.questionDuration||q.time;
+      questionStart=game.questionStart||Date.now();
+      $('p-q-text').textContent=q.q;
+      $('p-ans-score').textContent=myScore;
+      document.querySelectorAll('.p-ans').forEach(b=>{b.classList.remove('selected');b.disabled=false;b.style.opacity='1';});
+      show('s-p-ans');
+      startTimer(questionDuration,questionStart,null);
+    }
+
+    if(phase==='results'&&lastPhase!=='results'){
+      lastPhase='results';
+      clearInterval(timerInterval);
+      const res=game.playerResults?.[myName];
+      if(res){
+        myScore=res.totalScore||0;
+        $('r-emoji').textContent=res.noAnswer?'⏰':res.correct?'🎉':'😅';
+        $('r-msg').textContent=res.noAnswer?'Hết giờ!':res.correct?'Chính xác!':'Sai rồi!';
+        $('r-pts').textContent=res.correct?`+${res.points}`:'+0';
+        $('r-total').textContent=myScore;
+        $('p-wait-score').textContent=myScore;
+        show('s-p-result');
+      }
+    }
+
+    if(phase==='final'&&lastPhase!=='final'){
+      lastPhase='final';
+      clearInterval(timerInterval);
+      myScore=(game.players?.[myName]?.score)||myScore;
+      $('pf-av').textContent=myAvatar;$('pf-nm').textContent=myName;
+      $('pf-score').textContent=`${myScore} điểm`;
+      buildLb(game.players||{},$('pf-lb'),5);
+      show('s-p-final');confetti();
+    }
+  });
+}
+
+window.playerAns=async function(idx){
+  if(hasAnswered)return;
+  hasAnswered=true;
+  const elapsed=(Date.now()-questionStart)/1000;
+  const timeRemaining=Math.max(0,questionDuration-elapsed);
+  await update(dbr(`games/${gamePin}/answers/${myName}`),{answer:idx,timeRemaining});
+  document.querySelectorAll('.p-ans').forEach((b,i)=>{
+    if(i!==idx)b.style.opacity='.25';else b.classList.add('selected');
+    b.disabled=true;
+  });
+  $('p-timer').textContent='✓';
+  clearInterval(timerInterval);
+}
+
+window.goLand=function(){
+  stopAll();clearInterval(timerInterval);clearTimeout(autoEndTimer);
+  role='';myName='';myScore=0;gamePin='';lastPhase='';lastQIdx=-1;
+  show('s-land');
+}
+</script>
+</body>
+</html>
