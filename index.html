@@ -12,7 +12,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
 .screen{display:none;position:relative;z-index:1;min-height:100vh;padding:16px;flex-direction:column;align-items:center;animation:fadeIn .3s ease}
 .screen.active{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.logo{font-family:'Fredoka One',cursive;font-size:clamp(2.5rem,10vw,5rem);background:linear-gradient(135deg,var(--yellow),var(--red),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(255,214,0,.3))}
+.logo{font-family:'Fredoka One',cursive;font-size:clamp(2.5rem,10vw,5rem);background:linear-gradient(135deg,var(--yellow),var(--red),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .btn{padding:16px 36px;border:none;border-radius:var(--radius);font-family:'Fredoka One',cursive;font-size:1.3rem;cursor:pointer;transition:all .18s;width:100%;max-width:380px}
 .btn:active{transform:scale(.96)}
 .btn-host{background:linear-gradient(135deg,#FF3B5C,#FF8C00);color:#fff;box-shadow:0 8px 28px rgba(255,59,92,.4)}
@@ -26,15 +26,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
 .pin-code{font-family:'Fredoka One',cursive;font-size:clamp(2.5rem,10vw,4.5rem);letter-spacing:8px;line-height:1.1}
 .pin-hint{font-size:.78rem;color:#999;margin-top:5px}
 .players-wrap{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;max-height:240px;overflow-y:auto;padding:12px;background:rgba(255,255,255,.05);border-radius:var(--radius)}
-.p-badge{background:rgba(255,255,255,.13);border-radius:30px;padding:6px 14px;font-weight:700;font-size:.85rem;display:flex;align-items:center;gap:5px;animation:popIn .3s cubic-bezier(.175,.885,.32,1.275)}
-@keyframes popIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.p-badge{background:rgba(255,255,255,.13);border-radius:30px;padding:6px 14px;font-weight:700;font-size:.85rem;display:flex;align-items:center;gap:5px;animation:popIn .3s ease}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
 .counter{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--yellow)}
 .counter span{font-size:2.8rem}
-/* HOST QUESTION */
 .q-header{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.08);border-radius:var(--radius);padding:12px 16px;width:100%}
 .q-label{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--yellow)}
 .q-answered{font-size:.82rem;font-weight:700;color:rgba(255,255,255,.6)}
-.timer-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.45rem;background:conic-gradient(var(--yellow) 100%,rgba(255,255,255,.1) 0%);transition:background .15s}
+.timer-ring{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:1.45rem;background:conic-gradient(var(--yellow) 100%,rgba(255,255,255,.1) 0%);transition:background .2s}
 .q-text{background:rgba(255,255,255,.1);border-radius:var(--radius);padding:20px 24px;font-size:clamp(.95rem,3vw,1.4rem);font-weight:800;text-align:center;line-height:1.4;width:100%;border:2px solid rgba(255,255,255,.1)}
 .h-answers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;flex:1}
 .ans-btn{border:none;border-radius:var(--radius);padding:16px 12px;font-family:'Nunito',sans-serif;font-size:clamp(.78rem,2vw,1rem);font-weight:800;cursor:pointer;display:flex;align-items:center;gap:10px;color:#fff;text-align:left;min-height:72px}
@@ -44,22 +43,19 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
 .ans-btn.d{background:linear-gradient(135deg,var(--green),#00a070)}
 .ans-shape{width:34px;height:34px;flex-shrink:0;background:rgba(0,0,0,.18);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1rem}
 .ans-text{flex:1;line-height:1.3}
-/* RESULTS */
 .results-wrap{background:rgba(255,255,255,.07);border-radius:var(--radius);padding:16px;width:100%;overflow-y:auto}
 .r-bar-row{display:flex;align-items:center;gap:9px;margin-bottom:10px}
 .r-bar-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
-.r-bar-fill{height:38px;border-radius:8px;display:flex;align-items:center;padding:0 10px;font-weight:800;font-size:.85rem;min-width:40px;transition:width .8s cubic-bezier(.16,1,.3,1);white-space:nowrap;overflow:hidden}
+.r-bar-fill{height:38px;border-radius:8px;display:flex;align-items:center;padding:0 10px;font-weight:800;font-size:.85rem;min-width:40px;white-space:nowrap;overflow:hidden}
 .r-bar-count{font-weight:800;font-size:.82rem;color:rgba(255,255,255,.7);min-width:26px}
 .correct-chip{background:var(--green);color:#fff;border-radius:20px;padding:2px 9px;font-size:.7rem;font-weight:800;margin-left:auto;flex-shrink:0}
-/* LEADERBOARD */
 .lb-list{display:flex;flex-direction:column;gap:8px;width:100%;max-width:560px}
 .lb-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border-radius:var(--radius);padding:12px 16px;animation:slideIn .4s ease both}
-@keyframes slideIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
 .lb-rank{font-family:'Fredoka One',cursive;font-size:1.3rem;width:34px;text-align:center;color:rgba(255,255,255,.35)}
 .lb-rank.g{color:#FFD600;font-size:1.6rem}.lb-rank.s{color:#C0C0C0;font-size:1.5rem}.lb-rank.b{color:#CD7F32;font-size:1.45rem}
 .lb-name{flex:1;font-weight:800;font-size:1rem}
 .lb-score{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--yellow)}
-/* PLAYER WAITING */
 .p-avatar{font-size:4rem;animation:bop 1s ease-in-out infinite alternate}
 @keyframes bop{from{transform:translateY(0)}to{transform:translateY(-12px)}}
 .p-name-big{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--yellow)}
@@ -68,23 +64,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
 .dot:nth-child(2){animation-delay:.18s}.dot:nth-child(3){animation-delay:.36s}
 @keyframes dot{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-8px);opacity:.45}}
 .score-chip{background:rgba(255,255,255,.1);border-radius:30px;padding:9px 20px;font-weight:800;font-size:.95rem;color:var(--yellow);text-align:center}
-/* PLAYER ANSWER - hiện đáp án rõ ràng */
 .p-timer{font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--yellow)}
 .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:420px}
-.p-ans-btn{border:none;border-radius:18px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 10px;min-height:100px;transition:all .15s;box-shadow:0 6px 20px rgba(0,0,0,.3);font-family:'Nunito',sans-serif;color:#fff;font-weight:800;font-size:clamp(.75rem,3vw,.95rem);text-align:center;line-height:1.3}
-.p-ans-btn.a{background:var(--red)}
-.p-ans-btn.b{background:var(--blue)}
-.p-ans-btn.c{background:var(--yellow);color:var(--bg)}
-.p-ans-btn.d{background:var(--green)}
-.p-ans-btn:active{transform:scale(.92)}
-.p-ans-btn.selected{opacity:.55;transform:scale(.93)}
-.p-ans-btn:disabled{cursor:default}
+.p-ans-btn{border:none;border-radius:18px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 10px;min-height:100px;font-family:'Nunito',sans-serif;color:#fff;font-weight:800;font-size:clamp(.75rem,3vw,.95rem);text-align:center;line-height:1.3;box-shadow:0 6px 20px rgba(0,0,0,.3);transition:all .15s}
+.p-ans-btn.a{background:var(--red)}.p-ans-btn.b{background:var(--blue)}.p-ans-btn.c{background:var(--yellow);color:var(--bg)}.p-ans-btn.d{background:var(--green)}
+.p-ans-btn:active{transform:scale(.92)}.p-ans-btn.selected{opacity:.55;transform:scale(.93)}.p-ans-btn:disabled{cursor:default}
 .p-ans-icon{font-size:1.5rem;line-height:1}
 .p-ans-label{word-break:break-word;padding:0 4px}
-/* RESULT */
-.r-emoji{font-size:4.5rem;animation:popIn .5s ease}
+.r-emoji{font-size:4.5rem}
 .r-msg{font-family:'Fredoka One',cursive;font-size:1.9rem}
-.r-pts{font-family:'Fredoka One',cursive;font-size:2.8rem;color:var(--yellow);text-shadow:0 0 20px rgba(255,214,0,.5)}
+.r-pts{font-family:'Fredoka One',cursive;font-size:2.8rem;color:var(--yellow)}
 .final-title{font-family:'Fredoka One',cursive;font-size:clamp(2rem,8vw,3.8rem);background:linear-gradient(135deg,var(--yellow),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden}
 .cp{position:absolute;top:-20px;opacity:0;animation:fall linear forwards}
@@ -101,7 +90,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
 </head>
 <body>
 
-<!-- LANDING -->
 <div id="s-land" class="screen active" style="justify-content:center;gap:22px;text-align:center;">
   <div class="logo">QuizBuzz!</div>
   <div style="color:rgba(255,255,255,.65);font-weight:700;">🎯 Quiz realtime cho 200+ người</div>
@@ -112,7 +100,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <div class="info-box">Host mở trên máy tính / TV.<br>Người chơi dùng điện thoại, nhập mã PIN để vào.</div>
 </div>
 
-<!-- HOST LOBBY -->
 <div id="s-host-lobby" class="screen" style="gap:16px;align-items:center;">
   <div class="section-h" style="margin-top:8px;">🎮 Phòng chờ</div>
   <div class="pin-box">
@@ -126,11 +113,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <button class="btn btn-ghost" onclick="goLand()">← Về trang chủ</button>
 </div>
 
-<!-- HOST QUESTION -->
 <div id="s-host-q" class="screen" style="gap:12px;">
   <div class="q-header">
     <div>
-      <div class="q-label" id="h-q-label">Câu 1 / 15</div>
+      <div class="q-label" id="h-q-label">Câu 1/15</div>
       <div class="q-answered"><span id="h-ans-count">0</span>/<span id="h-total-count">0</span> đã trả lời</div>
     </div>
     <div class="timer-ring" id="h-timer">20</div>
@@ -145,7 +131,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <button class="btn btn-ghost" style="max-width:250px;font-size:.88rem;" onclick="hostEndQ()">⏭️ Kết thúc câu sớm</button>
 </div>
 
-<!-- HOST RESULTS -->
 <div id="s-host-results" class="screen" style="gap:12px;">
   <div class="section-h" style="text-align:center;">📊 Kết quả</div>
   <div class="q-text" id="r-q-text" style="font-size:.9rem;padding:12px 16px;"></div>
@@ -154,7 +139,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <button class="btn btn-host" onclick="hostNext()">⏭️ Câu tiếp theo</button>
 </div>
 
-<!-- HOST FINAL -->
 <div id="s-host-final" class="screen" style="gap:16px;justify-content:center;align-items:center;text-align:center;">
   <div class="final-title">🏆 GAME KẾT THÚC!</div>
   <div class="section-h" style="color:var(--yellow);">Bảng xếp hạng</div>
@@ -162,7 +146,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <button class="btn btn-ghost" style="max-width:260px;" onclick="goLand()">🔄 Chơi lại</button>
 </div>
 
-<!-- PLAYER JOIN -->
 <div id="s-p-join" class="screen" style="justify-content:center;gap:14px;text-align:center;">
   <div class="logo" style="font-size:2.5rem;">QuizBuzz!</div>
   <div class="gap">
@@ -176,7 +159,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   </div>
 </div>
 
-<!-- PLAYER WAITING -->
 <div id="s-p-wait" class="screen" style="justify-content:center;gap:14px;text-align:center;">
   <div class="p-avatar" id="p-av">🦊</div>
   <div class="p-name-big" id="p-nm">Bạn</div>
@@ -185,17 +167,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <div class="score-chip">Điểm: <span id="p-wait-score">0</span></div>
 </div>
 
-<!-- PLAYER ANSWER - nút to, hiện đáp án rõ -->
 <div id="s-p-ans" class="screen" style="gap:12px;align-items:center;">
   <div class="p-timer">⏱️ <span id="p-timer">20</span>s</div>
   <div class="q-text" id="p-q-text" style="font-size:.9rem;padding:12px 16px;width:100%;max-width:420px;"></div>
-  <div class="p-grid" id="p-grid">
-    <!-- Buttons inserted dynamically with answer text -->
-  </div>
+  <div class="p-grid" id="p-grid"></div>
   <div class="score-chip">Điểm: <span id="p-ans-score">0</span></div>
 </div>
 
-<!-- PLAYER RESULT -->
 <div id="s-p-result" class="screen" style="justify-content:center;gap:16px;text-align:center;">
   <div class="r-emoji" id="r-emoji">🎉</div>
   <div class="r-msg" id="r-msg">Chính xác!</div>
@@ -205,7 +183,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
   <div style="color:rgba(255,255,255,.45);font-size:.85rem;">Đang chờ câu tiếp theo...</div>
 </div>
 
-<!-- PLAYER FINAL -->
 <div id="s-p-final" class="screen" style="justify-content:center;gap:14px;text-align:center;align-items:center;">
   <div class="final-title">Game Over!</div>
   <div class="p-avatar" id="pf-av">🦊</div>
@@ -219,7 +196,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:#fff;min-height:
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, onValue, update, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, get, set, update, onValue, off, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAPs1PSNrzJaBuQxj4ybfsMDTAiAtRTRYQ",
@@ -231,10 +208,10 @@ const firebaseConfig = {
   appId: "1:1022028089485:web:b5401172fe44d220293ac4"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
 
-const QUESTIONS = [
+const QS = [
   {q:"Thủ đô của Nhật Bản là gì?",opts:["Osaka","Kyoto","Tokyo","Hiroshima"],ans:2,time:15},
   {q:"Sông nào dài nhất thế giới?",opts:["Amazon","Nile","Mekong","Mississippi"],ans:1,time:20},
   {q:"Ai là người đầu tiên đặt chân lên Mặt Trăng?",opts:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],ans:2,time:20},
@@ -255,24 +232,26 @@ const QUESTIONS = [
 const AVATARS=['🦊','🐯','🐼','🦁','🐸','🦄','🐶','🐱','🐧','🦋','🐙','🦅','🐬','🦖','🧸','🦩','🐻','🦝','🐨','🐮'];
 const COLORS=['var(--red)','var(--blue)','var(--yellow)','var(--green)'];
 const SHAPES=['▲','●','■','✦'];
-const CLASSES=['a','b','c','d'];
+const CLS=['a','b','c','d'];
 
-let role='', myName='', myAvatar=AVATARS[0], myScore=0;
-let gamePin='', hasAnswered=false, currentQ=null;
-let timerInterval=null, questionDuration=20, questionStart=0;
-let activeListeners=[], isEndingQuestion=false, autoEndTimer=null;
-let currentQIndex=-1, lastPhase='', lastQIdx=-1;
+// State
+let role='', myName='', myAvatar=AVATARS[0], myScore=0, gamePin='';
+let hasAnswered=false, qDur=20, qStart=0;
+let timerID=null, autoEndID=null;
+let ending=false, qIdx=-1;
+let lastPhase='', lastQIdx=-1;
+let unsubscribe=null;
 
 const $=id=>document.getElementById(id);
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
-function dbr(path){return ref(db,path)}
-function listen(path,cb){const r=dbr(path);onValue(r,snap=>cb(snap.val()));activeListeners.push(r);}
-function stopAll(){activeListeners.forEach(r=>off(r));activeListeners=[];}
+const dbr=p=>ref(db,p);
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');}
 
-function buildLb(obj,el,limit=10){
+function stopListen(){if(unsubscribe){unsubscribe();unsubscribe=null;}}
+
+function buildLb(obj,el,lim=10){
   el.innerHTML='';
   Object.entries(obj||{}).map(([n,d])=>({name:n,avatar:d.avatar||'🦊',score:d.score||0}))
-    .sort((a,b)=>b.score-a.score).slice(0,limit).forEach((p,i)=>{
+    .sort((a,b)=>b.score-a.score).slice(0,lim).forEach((p,i)=>{
       const isMe=p.name===myName;
       const ri=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`;
       const rc=i===0?'g':i===1?'s':i===2?'b':'';
@@ -284,141 +263,174 @@ function buildLb(obj,el,limit=10){
 }
 
 function confetti(){
-  const wrap=$('conf');wrap.innerHTML='';
+  const w=$('conf');w.innerHTML='';
   ['#FF3B5C','#0099FF','#FFD600','#00C896','#FF8C00','#FF69B4'].forEach(c=>{
     for(let i=0;i<15;i++){
-      const el=document.createElement('div');el.className='cp';
-      el.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*8}px;height:${8+Math.random()*12}px;background:${c};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*2}s;`;
-      wrap.appendChild(el);
+      const e=document.createElement('div');e.className='cp';
+      e.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*8}px;height:${8+Math.random()*12}px;background:${c};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*2}s;`;
+      w.appendChild(e);
     }
   });
-  setTimeout(()=>wrap.innerHTML='',7000);
+  setTimeout(()=>w.innerHTML='',7000);
 }
 
-function startTimer(duration,start,onDone){
-  clearInterval(timerInterval);
-  timerInterval=setInterval(()=>{
-    const left=Math.max(0,duration-(Date.now()-start)/1000);
-    const pct=(left/duration)*100;
-    const color=left<=5?'var(--red)':'var(--yellow)';
+function runTimer(dur,start,onEnd){
+  clearInterval(timerID);
+  timerID=setInterval(()=>{
+    const left=Math.max(0,dur-(Date.now()-start)/1000);
+    const pct=(left/dur)*100;
+    const col=left<=5?'var(--red)':'var(--yellow)';
     if(role==='host'){
       const el=$('h-timer');
       el.textContent=Math.ceil(left);
-      el.style.background=`conic-gradient(${color} ${pct}%,rgba(255,255,255,.1) 0%)`;
+      el.style.background=`conic-gradient(${col} ${pct}%,rgba(255,255,255,.1) 0%)`;
     } else {
       $('p-timer').textContent=Math.ceil(left);
     }
-    if(left<=0){clearInterval(timerInterval);if(onDone)onDone();}
-  },150);
+    if(left<=0){clearInterval(timerID);if(onEnd)onEnd();}
+  },200);
 }
 
-// ===== HOST =====
+// ======= HOST =======
 window.goHost=async function(){
   role='host';
   gamePin=Math.floor(100000+Math.random()*900000).toString();
-  await set(dbr(`games/${gamePin}`),{phase:'lobby',questionIndex:-1,questionStart:0,questionDuration:20,players:{},answers:{}});
+  // Init fresh game - only lobby data, no players yet
+  await set(dbr(`games/${gamePin}`),{
+    phase:'lobby',
+    qIdx:-1,
+    qStart:0,
+    qDur:20
+  });
   $('pin-display').textContent=gamePin;
   $('h-count').textContent='0';
   $('h-players').innerHTML='';
   show('s-host-lobby');
-  listen(`games/${gamePin}/players`,players=>{
-    $('h-count').textContent=Object.keys(players||{}).length;
-    Object.entries(players||{}).forEach(([name,data])=>{
-      if(!$('badge-'+name)){
-        const b=document.createElement('div');b.className='p-badge';b.id='badge-'+name;
+  // Watch players joining
+  const pRef=dbr(`games/${gamePin}/players`);
+  unsubscribe=()=>off(pRef);
+  onValue(pRef,snap=>{
+    const players=snap.val()||{};
+    $('h-count').textContent=Object.keys(players).length;
+    Object.entries(players).forEach(([name,data])=>{
+      if(!$('b-'+name)){
+        const b=document.createElement('div');b.className='p-badge';b.id='b-'+name;
         b.innerHTML=`${data.avatar||'🦊'} ${name}`;$('h-players').appendChild(b);
       }
     });
     $('h-players').querySelectorAll('.p-badge').forEach(b=>{
-      if(!(players||{})[b.id.replace('badge-','')]) b.remove();
+      if(!players[b.id.replace('b-','')]) b.remove();
     });
   });
-}
+};
 
 window.hostStart=async function(){
   const snap=await get(dbr(`games/${gamePin}/players`));
   if(!snap.exists()||!Object.keys(snap.val()||{}).length){alert('Chưa có người chơi!');return;}
-  stopAll();
-  await doQuestion(0);
-}
+  stopListen();
+  doQ(0);
+};
 
-async function doQuestion(idx){
-  if(idx>=QUESTIONS.length){await doFinal();return;}
-  isEndingQuestion=false;
-  currentQIndex=idx;
-  const q=QUESTIONS[idx];
-  currentQ=q;
-  questionDuration=q.time;
-  questionStart=Date.now();
+async function doQ(idx){
+  if(idx>=QS.length){doFinal();return;}
+  ending=false;
+  qIdx=idx;
+  const q=QS[idx];
+  qDur=q.time;
+  qStart=Date.now();
 
-  const playersSnap=await get(dbr(`games/${gamePin}/players`));
-  await set(dbr(`games/${gamePin}`),{
+  // Use update() not set() to preserve players data
+  await update(dbr(`games/${gamePin}`),{
     phase:'question',
-    questionIndex:idx,
-    questionStart,
-    questionDuration:q.time,
-    players:playersSnap.val()||{},
-    answers:{}
+    qIdx:idx,
+    qStart,
+    qDur:q.time,
+    answers:null,      // clear old answers
+    results:null       // clear old results
   });
 
-  $('h-q-label').textContent=`Câu ${idx+1} / ${QUESTIONS.length}`;
+  // Update host UI
+  $('h-q-label').textContent=`Câu ${idx+1}/${QS.length}`;
   $('h-q-text').textContent=q.q;
   ['h-opt-0','h-opt-1','h-opt-2','h-opt-3'].forEach((id,i)=>$(id).textContent=q.opts[i]);
   $('h-ans-count').textContent='0';
 
   document.querySelectorAll('.ans-btn').forEach((b,i)=>{
-    b.style.opacity=i===q.ans?'1':'.65';
-    b.style.outline=i===q.ans?'3px solid white':'none';
+    b.style.opacity=i===q.ans?'1':'.6';
+    b.style.outline=i===q.ans?'3px solid #fff':'none';
   });
 
-  stopAll();
-  listen(`games/${gamePin}/answers`,answers=>{$('h-ans-count').textContent=Object.keys(answers||{}).length;});
-  listen(`games/${gamePin}/players`,players=>{$('h-total-count').textContent=Object.keys(players||{}).length;});
+  // Watch answer count
+  const aRef=dbr(`games/${gamePin}/answers`);
+  const pRef2=dbr(`games/${gamePin}/players`);
+  stopListen();
+  let unsub1=()=>off(aRef), unsub2=()=>off(pRef2);
+  unsubscribe=()=>{unsub1();unsub2();};
+  onValue(aRef,snap=>$('h-ans-count').textContent=Object.keys(snap.val()||{}).length);
+  onValue(pRef2,snap=>$('h-total-count').textContent=Object.keys(snap.val()||{}).length);
 
   show('s-host-q');
-  clearTimeout(autoEndTimer);
-  autoEndTimer=setTimeout(()=>hostEndQ(),q.time*1000+500);
-  startTimer(q.time,questionStart,()=>hostEndQ());
+  clearTimeout(autoEndID);
+  autoEndID=setTimeout(()=>hostEndQ(),q.time*1000+400);
+  runTimer(q.time,qStart,()=>hostEndQ());
 }
 
 window.hostEndQ=async function(){
-  if(isEndingQuestion)return;
-  isEndingQuestion=true;
-  clearTimeout(autoEndTimer);
-  clearInterval(timerInterval);
-  stopAll();
+  if(ending)return;
+  ending=true;
+  clearTimeout(autoEndID);
+  clearInterval(timerID);
+  stopListen();
 
-  const q=currentQ;
-  const [aSnap,pSnap]=await Promise.all([get(dbr(`games/${gamePin}/answers`)),get(dbr(`games/${gamePin}/players`))]);
+  const q=QS[qIdx];
+  const [aSnap,pSnap]=await Promise.all([
+    get(dbr(`games/${gamePin}/answers`)),
+    get(dbr(`games/${gamePin}/players`))
+  ]);
   const answers=aSnap.val()||{};
   const players=pSnap.val()||{};
 
+  // Tally
   const counts=[0,0,0,0];
   Object.values(answers).forEach(a=>{if(a.answer>=0&&a.answer<=3)counts[a.answer]++;});
 
-  const updates={};
+  // Scores + results
+  const scoreUpdates={};
+  const resultData={};
   Object.entries(answers).forEach(([name,data])=>{
     const correct=data.answer===q.ans;
     let pts=0;
-    if(correct){pts=200+Math.round(800*(data.timeRemaining/q.time));updates[`games/${gamePin}/players/${name}/score`]=(players[name]?.score||0)+pts;}
-    updates[`games/${gamePin}/playerResults/${name}`]={correct,points:pts,totalScore:(players[name]?.score||0)+pts};
+    if(correct){
+      pts=200+Math.round(800*(data.timeRemaining/q.time));
+      scoreUpdates[name]=(players[name]?.score||0)+pts;
+    } else {
+      scoreUpdates[name]=(players[name]?.score||0);
+    }
+    resultData[name]={correct,points:pts,total:scoreUpdates[name]};
   });
   Object.keys(players).forEach(name=>{
-    if(!answers[name])updates[`games/${gamePin}/playerResults/${name}`]={correct:false,points:0,totalScore:players[name]?.score||0,noAnswer:true};
+    if(!answers[name]){
+      scoreUpdates[name]=players[name]?.score||0;
+      resultData[name]={correct:false,points:0,total:scoreUpdates[name],noAnswer:true};
+    }
   });
-  updates[`games/${gamePin}/phase`]='results';
-  await update(dbr(''),updates);
 
-  const finalP=(await get(dbr(`games/${gamePin}/players`))).val()||{};
-  showResults(q,counts,finalP,Object.keys(answers).length);
-}
+  // Write all at once using update
+  const upd={phase:'results', counts, correctIdx:q.ans, results:resultData};
+  Object.entries(scoreUpdates).forEach(([name,score])=>{upd[`players/${name}/score`]=score;});
+  await update(dbr(`games/${gamePin}`),upd);
 
-function showResults(q,counts,players,totalAnswered){
+  // Show results UI
+  const finalPSnap=await get(dbr(`games/${gamePin}/players`));
+  renderResults(q,counts,finalPSnap.val()||{},Object.keys(answers).length);
+};
+
+function renderResults(q,counts,players,total){
   $('r-q-text').textContent=q.q;
   const bars=$('r-bars');bars.innerHTML='';
   q.opts.forEach((opt,i)=>{
     const cnt=counts[i]||0;
-    const pct=Math.round((cnt/Math.max(totalAnswered,1))*100);
+    const pct=Math.round((cnt/Math.max(total,1))*100);
     const row=document.createElement('div');row.className='r-bar-row';
     row.innerHTML=`<div class="r-bar-icon" style="background:${COLORS[i]}">${SHAPES[i]}</div><div style="flex:1;display:flex;align-items:center;gap:8px;overflow:hidden;"><div class="r-bar-fill" style="width:${Math.max(pct,4)}%;background:${COLORS[i]};color:${i===2?'var(--bg)':'#fff'}">${opt.length>14?opt.slice(0,14)+'…':opt}</div>${i===q.ans?'<span class="correct-chip">✓ ĐÚNG</span>':''}</div><div class="r-bar-count">${cnt}</div>`;
     bars.appendChild(row);
@@ -427,10 +439,7 @@ function showResults(q,counts,players,totalAnswered){
   show('s-host-results');
 }
 
-window.hostNext=async function(){
-  await update(dbr(`games/${gamePin}`),{playerResults:null});
-  await doQuestion(currentQIndex+1);
-}
+window.hostNext=function(){doQ(qIdx+1);};
 
 async function doFinal(){
   await update(dbr(`games/${gamePin}`),{phase:'final'});
@@ -440,7 +449,7 @@ async function doFinal(){
   confetti();
 }
 
-// ===== PLAYER =====
+// ======= PLAYER =======
 window.goPlayer=function(){
   role='player';
   const grid=$('em-grid');grid.innerHTML='';
@@ -451,7 +460,7 @@ window.goPlayer=function(){
   });
   $('p-err').style.display='none';
   show('s-p-join');
-}
+};
 
 window.playerJoin=async function(){
   const pin=$('p-pin').value.trim();
@@ -461,24 +470,23 @@ window.playerJoin=async function(){
   if(!name){showErr('Nhập tên của bạn!');return;}
   const snap=await get(dbr(`games/${pin}`));
   if(!snap.exists()){showErr('PIN không đúng!');return;}
-  if(snap.val().phase!=='lobby'){showErr('Game đã bắt đầu rồi!');return;}
-  if(snap.val().players&&snap.val().players[name]){showErr('Tên đã có người dùng!');return;}
+  const gData=snap.val();
+  if(gData.phase!=='lobby'){showErr('Game đã bắt đầu rồi!');return;}
+  if(gData.players&&gData.players[name]){showErr('Tên đã có người dùng!');return;}
   gamePin=pin;myName=name;myScore=0;
-  await update(dbr(`games/${gamePin}/players/${myName}`),{avatar:myAvatar,score:0});
+  await update(dbr(`games/${gamePin}/players/${name}`),{avatar:myAvatar,score:0});
   $('p-av').textContent=myAvatar;$('p-nm').textContent=name;$('p-wait-score').textContent='0';
   show('s-p-wait');
   playerListen();
-}
+};
 
 function showErr(msg){const e=$('p-err');e.textContent=msg;e.style.display='block';}
 
-// Build player answer buttons WITH text
-function buildPlayerButtons(opts){
-  const grid=$('p-grid');
-  grid.innerHTML='';
+function buildPButtons(opts){
+  const grid=$('p-grid');grid.innerHTML='';
   opts.forEach((opt,i)=>{
     const btn=document.createElement('button');
-    btn.className=`p-ans-btn ${CLASSES[i]}`;
+    btn.className=`p-ans-btn ${CLS[i]}`;
     btn.innerHTML=`<div class="p-ans-icon">${SHAPES[i]}</div><div class="p-ans-label">${opt}</div>`;
     btn.onclick=()=>playerAns(i);
     grid.appendChild(btn);
@@ -486,31 +494,36 @@ function buildPlayerButtons(opts){
 }
 
 function playerListen(){
-  listen(`games/${gamePin}`,game=>{
-    if(!game)return;
-    const phase=game.phase;
-    const qIdx=game.questionIndex;
+  stopListen();
+  const gRef=dbr(`games/${gamePin}`);
+  unsubscribe=()=>off(gRef);
+  onValue(gRef,snap=>{
+    const g=snap.val();
+    if(!g)return;
+    const {phase,qIdx:qi,qStart:qs,qDur:qd,results}=g;
 
-    if(phase==='question'&&(phase!==lastPhase||qIdx!==lastQIdx)){
-      lastPhase=phase;lastQIdx=qIdx;
-      hasAnswered=false;
-      const q=QUESTIONS[qIdx];
-      currentQ=q;
-      questionDuration=game.questionDuration||q.time;
-      questionStart=game.questionStart||Date.now();
-      $('p-q-text').textContent=q.q;
-      $('p-ans-score').textContent=myScore;
-      buildPlayerButtons(q.opts); // Build buttons với text đáp án
-      show('s-p-ans');
-      startTimer(questionDuration,questionStart,null);
+    if(phase==='question'){
+      // New question?
+      if(phase!==lastPhase||qi!==lastQIdx){
+        lastPhase=phase;lastQIdx=qi;
+        hasAnswered=false;
+        const q=QS[qi];
+        qDur=qd||q.time;
+        qStart=qs||Date.now();
+        $('p-q-text').textContent=q.q;
+        $('p-ans-score').textContent=myScore;
+        buildPButtons(q.opts);
+        show('s-p-ans');
+        runTimer(qDur,qStart,null);
+      }
     }
 
     if(phase==='results'&&lastPhase!=='results'){
       lastPhase='results';
-      clearInterval(timerInterval);
-      const res=game.playerResults?.[myName];
+      clearInterval(timerID);
+      const res=(results||{})[myName];
       if(res){
-        myScore=res.totalScore||0;
+        myScore=res.total||0;
         $('r-emoji').textContent=res.noAnswer?'⏰':res.correct?'🎉':'😅';
         $('r-msg').textContent=res.noAnswer?'Hết giờ!':res.correct?'Chính xác!':'Sai rồi!';
         $('r-pts').textContent=res.correct?`+${res.points}`:'+0';
@@ -522,11 +535,11 @@ function playerListen(){
 
     if(phase==='final'&&lastPhase!=='final'){
       lastPhase='final';
-      clearInterval(timerInterval);
-      myScore=(game.players?.[myName]?.score)||myScore;
+      clearInterval(timerID);
+      myScore=(g.players?.[myName]?.score)||myScore;
       $('pf-av').textContent=myAvatar;$('pf-nm').textContent=myName;
       $('pf-score').textContent=`${myScore} điểm`;
-      buildLb(game.players||{},$('pf-lb'),5);
+      buildLb(g.players||{},$('pf-lb'),5);
       show('s-p-final');confetti();
     }
   });
@@ -535,22 +548,23 @@ function playerListen(){
 window.playerAns=async function(idx){
   if(hasAnswered)return;
   hasAnswered=true;
-  const elapsed=(Date.now()-questionStart)/1000;
-  const timeRemaining=Math.max(0,questionDuration-elapsed);
+  const elapsed=(Date.now()-qStart)/1000;
+  const timeRemaining=Math.max(0,qDur-elapsed);
   await update(dbr(`games/${gamePin}/answers/${myName}`),{answer:idx,timeRemaining});
   $('p-grid').querySelectorAll('.p-ans-btn').forEach((b,i)=>{
-    if(i!==idx)b.style.opacity='.25';else b.classList.add('selected');
+    b.style.opacity=i!==idx?'.2':'1';
+    if(i===idx)b.classList.add('selected');
     b.disabled=true;
   });
   $('p-timer').textContent='✓';
-  clearInterval(timerInterval);
-}
+  clearInterval(timerID);
+};
 
 window.goLand=function(){
-  stopAll();clearInterval(timerInterval);clearTimeout(autoEndTimer);
-  role='';myName='';myScore=0;gamePin='';lastPhase='';lastQIdx=-1;currentQIndex=-1;
+  stopListen();clearInterval(timerID);clearTimeout(autoEndID);
+  role='';myName='';myScore=0;gamePin='';lastPhase='';lastQIdx=-1;qIdx=-1;ending=false;
   show('s-land');
-}
+};
 </script>
 </body>
 </html>
