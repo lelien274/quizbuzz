@@ -212,6 +212,7 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
 const QS = [
+  {q:"Nhiệt độ sôi của nước ở áp suất chuẩn?",opts:["90°C","95°C","100°C","105°C"],ans:2,time:20},
   {q:"Thủ đô của Úc là gì?",opts:["Sydney","Melbourne","Canberra","Brisbane"],ans:2,time:20},
   {q:"Sông nào dài nhất thế giới?",opts:["Amazon","Nile","Mekong","Mississippi"],ans:1,time:20},
   {q:"Ai là người đầu tiên đặt chân lên Mặt Trăng?",opts:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],ans:2,time:20},
@@ -223,7 +224,6 @@ const QS = [
   {q:"Hà Nội nằm bên bờ sông nào?",opts:["Sông Mã","Sông Hồng","Sông Đà","Sông Lam"],ans:1,time:20},
   {q:"Châu lục nào có diện tích lớn nhất?",opts:["Châu Phi","Châu Mỹ","Châu Á","Châu Âu"],ans:2,time:20},
   {q:"Chiến dịch Hồ Chí Minh kết thúc vào ngày nào?",opts:["30/4/1975","1/5/1975","7/5/1975","2/9/1975"],ans:0,time:20},
-  {q:"Nhiệt độ sôi của nước ở áp suất chuẩn?",opts:["90°C","95°C","100°C","105°C"],ans:2,time:20},
   {q:"Việt Nam gia nhập WTO năm nào?",opts:["2005","2006","2007","2008"],ans:2,time:20},
   {q:"Quốc gia nào có dân số đông nhất thế giới?",opts:["Ấn Độ","Trung Quốc","Mỹ","Indonesia"],ans:0,time:20},
   {q:"Đuông dừa là đặc sản nổi tiếng của tỉnh nào?",opts:["Tiền Giang","Bến Tre","Vĩnh Long","Trà Vinh"],ans:1,time:20},
