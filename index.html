@@ -212,21 +212,21 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 
 const QS = [
-  {q:"Thủ đô của Nhật Bản là gì?",opts:["Osaka","Kyoto","Tokyo","Hiroshima"],ans:2,time:15},
+  {q:"Thủ đô của Úc là gì?",opts:["Sydney","Melbourne","Canberra","Brisbane"],ans:2,time:20},
   {q:"Sông nào dài nhất thế giới?",opts:["Amazon","Nile","Mekong","Mississippi"],ans:1,time:20},
   {q:"Ai là người đầu tiên đặt chân lên Mặt Trăng?",opts:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],ans:2,time:20},
-  {q:"Việt Nam có bao nhiêu tỉnh thành?",opts:["58","61","63","67"],ans:2,time:15},
-  {q:"Ngôn ngữ lập trình nào phổ biến nhất 2024?",opts:["Java","Python","JavaScript","C++"],ans:1,time:20},
-  {q:"1 pound bằng bao nhiêu kg?",opts:["0.25 kg","0.45 kg","0.60 kg","0.75 kg"],ans:1,time:20},
-  {q:"Bức tranh Mona Lisa được vẽ bởi ai?",opts:["Michelangelo","Raphael","Leonardo da Vinci","Picasso"],ans:2,time:15},
+  {q:"VN có bao nhiêu tỉnh thành sau sáp nhập địa giới hành chính từ 1/7/2025?",opts:["32","34","36","38"],ans:1,time:20},
+  {q:"Cộng đồng CEO HN9 Group QT & KN hiện có bao nhiêu thành viên chính thức?",opts:["255","265","277","289"],ans:2,time:20},
+  {q:"Cộng đồng CEO HN9 Group QT & KN có bao nhiêu Ban chức năng?",opts:["5","6","7","8"],ans:2,time:20},
+  {q:"Loại hình doanh nghiệp nào ở Việt Nam không có tư cách pháp nhân?",opts:["Công ty TNHH","Công ty Cổ phần","Doanh nghiệp tư nhân","Công ty Hợp danh"],ans:2,time:20},
   {q:"Kim loại nào nhẹ nhất?",opts:["Nhôm","Lithium","Beryllium","Titanium"],ans:1,time:20},
-  {q:"Hà Nội nằm bên bờ sông nào?",opts:["Sông Mã","Sông Hồng","Sông Đà","Sông Lam"],ans:1,time:15},
-  {q:"Châu lục nào có diện tích lớn nhất?",opts:["Châu Phi","Châu Mỹ","Châu Á","Châu Âu"],ans:2,time:15},
+  {q:"Hà Nội nằm bên bờ sông nào?",opts:["Sông Mã","Sông Hồng","Sông Đà","Sông Lam"],ans:1,time:20},
+  {q:"Châu lục nào có diện tích lớn nhất?",opts:["Châu Phi","Châu Mỹ","Châu Á","Châu Âu"],ans:2,time:20},
   {q:"Phim nào đoạt Oscar Phim xuất sắc nhất 2020?",opts:["1917","Joker","Parasite","Little Women"],ans:2,time:20},
-  {q:"Nhiệt độ sôi của nước ở áp suất chuẩn?",opts:["90°C","95°C","100°C","105°C"],ans:2,time:15},
+  {q:"Nhiệt độ sôi của nước ở áp suất chuẩn?",opts:["90°C","95°C","100°C","105°C"],ans:2,time:20},
   {q:"Con người có bao nhiêu chiếc răng vĩnh viễn?",opts:["28","30","32","34"],ans:2,time:20},
-  {q:"Quốc gia nào có dân số đông nhất thế giới?",opts:["Ấn Độ","Trung Quốc","Mỹ","Indonesia"],ans:0,time:15},
-  {q:"Taylor Swift sinh ra ở bang nào của Mỹ?",opts:["Texas","California","Pennsylvania","Tennessee"],ans:2,time:20},
+  {q:"Quốc gia nào có dân số đông nhất thế giới?",opts:["Ấn Độ","Trung Quốc","Mỹ","Indonesia"],ans:0,time:20},
+  {q:"Đuông dừa là đặc sản nổi tiếng của tỉnh nào?",opts:["Cà Mau","Bến Tre","Tiền Giang","Vĩnh Long"],ans:1,time:20},
 ];
 
 const AVATARS=['🦊','🐯','🐼','🦁','🐸','🦄','🐶','🐱','🐧','🦋','🐙','🦅','🐬','🦖','🧸','🦩','🐻','🦝','🐨','🐮'];
@@ -493,6 +493,16 @@ function buildPButtons(opts){
   });
 }
 
+// Lock player out if they leave the tab
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden && role==='player' && gamePin){
+    stopListen();clearInterval(timerID);clearTimeout(autoEndID);
+    role='';myName='';myScore=0;gamePin='';lastPhase='';lastQIdx=-1;
+    show('s-land');
+    setTimeout(()=>alert('Bạn đã thoát khỏi game vì rời khỏi trang!'),100);
+  }
+});
+
 function playerListen(){
   stopListen();
   const gRef=dbr(`games/${gamePin}`);
@@ -548,13 +558,21 @@ function playerListen(){
 window.playerAns=async function(idx){
   if(hasAnswered)return;
   hasAnswered=true;
+  // Block all buttons instantly - prevent double-tap on iOS/Android
+  $('p-grid').querySelectorAll('.p-ans-btn').forEach(b=>{
+    b.disabled=true;
+    b.style.pointerEvents='none';
+  });
   const elapsed=(Date.now()-qStart)/1000;
   const timeRemaining=Math.max(0,qDur-elapsed);
-  await update(dbr(`games/${gamePin}/answers/${myName}`),{answer:idx,timeRemaining});
+  // Double-check Firebase - only write if not already answered
+  const existing=await get(dbr(`games/${gamePin}/answers/${myName}`));
+  if(!existing.exists()){
+    await update(dbr(`games/${gamePin}/answers/${myName}`),{answer:idx,timeRemaining});
+  }
   $('p-grid').querySelectorAll('.p-ans-btn').forEach((b,i)=>{
     b.style.opacity=i!==idx?'.2':'1';
     if(i===idx)b.classList.add('selected');
-    b.disabled=true;
   });
   $('p-timer').textContent='✓';
   clearInterval(timerID);
