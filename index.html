@@ -213,17 +213,17 @@ const db = getDatabase(fbApp);
 
 const QS = [
   {q:"Nhiệt độ sôi của nước ở áp suất chuẩn?",opts:["90°C","95°C","100°C","105°C"],ans:2,time:20},
+  {q:"Chiến dịch Hồ Chí Minh kết thúc vào ngày nào?",opts:["30/4/1975","1/5/1975","7/5/1975","2/9/1975"],ans:0,time:20},
   {q:"Thủ đô của Úc là gì?",opts:["Sydney","Melbourne","Canberra","Brisbane"],ans:2,time:20},
   {q:"Sông nào dài nhất thế giới?",opts:["Amazon","Nile","Mekong","Mississippi"],ans:1,time:20},
   {q:"Ai là người đầu tiên đặt chân lên Mặt Trăng?",opts:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","John Glenn"],ans:2,time:20},
-  {q:"VN có bao nhiêu tỉnh thành sau sáp nhập địa giới hành chính từ 1/7/2025?",opts:["32","34","36","38"],ans:1,time:20},
+  {q:"Việt Nam có bao nhiêu tỉnh thành sau sáp nhập địa giới hành chính từ 1/7/2025?",opts:["32","34","36","38"],ans:1,time:20},
   {q:"Cộng đồng CEO HN9 Group QT & KN hiện có bao nhiêu thành viên chính thức?",opts:["255","265","277","289"],ans:2,time:20},
   {q:"Cộng đồng CEO HN9 Group QT & KN có bao nhiêu Ban chức năng?",opts:["5","6","7","8"],ans:2,time:20},
   {q:"Loại hình doanh nghiệp nào ở Việt Nam không có tư cách pháp nhân?",opts:["Công ty TNHH","Công ty Cổ phần","Doanh nghiệp tư nhân","Công ty Hợp danh"],ans:2,time:20},
   {q:"Kim loại nào nhẹ nhất?",opts:["Nhôm","Lithium","Beryllium","Titanium"],ans:1,time:20},
   {q:"Hà Nội nằm bên bờ sông nào?",opts:["Sông Mã","Sông Hồng","Sông Đà","Sông Lam"],ans:1,time:20},
   {q:"Châu lục nào có diện tích lớn nhất?",opts:["Châu Phi","Châu Mỹ","Châu Á","Châu Âu"],ans:2,time:20},
-  {q:"Chiến dịch Hồ Chí Minh kết thúc vào ngày nào?",opts:["30/4/1975","1/5/1975","7/5/1975","2/9/1975"],ans:0,time:20},
   {q:"Việt Nam gia nhập WTO năm nào?",opts:["2005","2006","2007","2008"],ans:2,time:20},
   {q:"Quốc gia nào có dân số đông nhất thế giới?",opts:["Ấn Độ","Trung Quốc","Mỹ","Indonesia"],ans:0,time:20},
   {q:"Đuông dừa là đặc sản nổi tiếng của tỉnh nào?",opts:["Tiền Giang","Bến Tre","Vĩnh Long","Trà Vinh"],ans:1,time:20},
@@ -293,6 +293,8 @@ function runTimer(dur,start,onEnd){
 
 // ======= HOST =======
 window.goHost=async function(){
+  const pwd = prompt("Nhập mật khẩu Host:");
+  if(pwd !== "456789"){ alert("Sai mật khẩu!"); return; }
   role='host';
   gamePin=Math.floor(100000+Math.random()*900000).toString();
   // Init fresh game - only lobby data, no players yet
